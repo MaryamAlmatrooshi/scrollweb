@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Story</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Noteworthy, sans-serif;
+      background-image: url("img/background.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .section {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .section.animate {
+      transform: translateY(0);
+    }
+
+    .image-container {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      max-height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .image-container.zoom-in img {
+      transform: translate(-50%, -50%) scale(1.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="section" id="section1">
+    <h1>Once upon a time...</h1>
+  </div>
+  <div class="section" id="section2">
+    <h2>There was a magical forest.</h2>
+  </div>
+  <div class="image-container" id="section3">
+    <img src="img/forest.jpeg" alt="Magical Forest">
+  </div>
+  <div class="section" id="section4">
+    <h3>The forest was home to mystical creatures.</h3>
+  </div>
+  <div class="image-container" id="section5">
+    <img src="img/creatures.avif" alt="Mystical Creatures">
+  </div>
+  <div class="section" id="section6">
+    <h4>Legend had it that a hidden treasure was buried deep within.</h4>
+  </div>
+
+  <script>
+    // Function to handle scroll animation
+    function scrollAnimation() {
+      const sections = document.querySelectorAll('.section');
+      const imageContainers = document.querySelectorAll('.image-container');
+
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const distanceFromTop = rect.top;
+
+        if (distanceFromTop <= window.innerHeight * 0.6) {
+          section.classList.add('animate');
+        } else {
+          section.classList.remove('animate');
+        }
+      });
+
+      imageContainers.forEach((imageContainer) => {
+        const rect = imageContainer.getBoundingClientRect();
+        const distanceFromTop = rect.top;
+        const distanceFromBottom = rect.bottom;
+
+        if (
+          distanceFromTop <= window.innerHeight * 0.6 &&
+          distanceFromBottom >= window.innerHeight * 0.4
+        ) {
+          imageContainer.classList.add('zoom-in');
+        } else {
+          imageContainer.classList.remove('zoom-in');
+        }
+      });
+    }
+
+    // Event listener for scroll
+    window.addEventListener('scroll', scrollAnimation);
+    // Call the scroll animation on page load
+    scrollAnimation();
+  </script>
+</body>
+</html>
